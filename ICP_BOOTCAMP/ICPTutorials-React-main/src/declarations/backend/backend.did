@@ -1,0 +1,73 @@
+type UserSettings = 
+ record {
+   avatar: opt blob;
+   country: opt text;
+   name: opt text;
+   sex: opt text;
+ };
+type User = 
+ record {
+   admissionDate: int;
+   avatar: opt blob;
+   birthdate: opt nat;
+   country: opt text;
+   name: text;
+   sex: opt text;
+ };
+type Tutorial__1 = 
+ record {
+   assets: vec blob;
+   html: text;
+   tags: vec text;
+   title: text;
+ };
+type Tutorial = 
+ record {
+   assets: vec blob;
+   html: text;
+   tags: vec text;
+   title: text;
+ };
+type SignUpResult = 
+ variant {
+   err: SignUpErrors;
+   ok: User;
+ };
+type SignUpErrors = 
+ variant {
+   CallerAnnonymous;
+   InBlackList;
+   IsAlreadyAMember;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type PublishResult = 
+ variant {
+   err: text;
+   ok: Publication;
+ };
+type Publication = 
+ record {
+   autor: nat;
+   content: Tutorial__1;
+   date: int;
+ };
+type ICPTutorials = 
+ service {
+   aprovePublication: (nat) -> (Result);
+   getAprovedPublication: () -> (vec Publication) query;
+   getIncomingPublication: () -> (vec Publication);
+   getMiId: () -> (opt nat);
+   getMiUser: () -> (opt User);
+   getPubFromUser: (nat) -> (vec Publication) query;
+   getUsers: () -> (vec User) query;
+   loadAvatar: (blob) -> (opt blob);
+   publish: (Tutorial) -> (PublishResult);
+   rejectPublication: (nat) -> (Result);
+   signUp: (text, text) -> (SignUpResult);
+   userConfig: (UserSettings) -> ();
+ };
+service : () -> ICPTutorials
